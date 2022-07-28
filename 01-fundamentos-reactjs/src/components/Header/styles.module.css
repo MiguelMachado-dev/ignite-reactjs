@@ -8,3 +8,9 @@
 .header img {
   height: 2rem;
 }
+
+.title {
+  font-weight: 700;
+  font-size: 1.625rem;
+  margin-left: 1rem;
+}

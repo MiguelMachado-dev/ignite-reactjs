@@ -4,7 +4,7 @@ export function Header() {
   return (
     <header className={S.header}>
       <img src="/ignite-logo.svg" alt="Logotipo do Ignite" />
-      <strong>Ignite feed</strong>
+      <strong className={S.title}>Ignite feed</strong>
     </header>
   );
 }
