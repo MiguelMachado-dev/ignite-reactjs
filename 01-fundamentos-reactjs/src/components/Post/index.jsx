@@ -2,18 +2,18 @@ import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
 import S from "./styles.module.css";
 
-export function Post() {
+export function Post({ author, content, publishedAt }) {
   return (
     <article className={S.post}>
       <header>
         <div className={S.author}>
           <Avatar
-            src="https://github.com/MiguelMachado-dev.png"
+            src={author.avatarUrl}
           />
 
           <div className={S.authorInfo}>
-            <strong>Miguel Machado</strong>
-            <span>Frontend Engineer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
