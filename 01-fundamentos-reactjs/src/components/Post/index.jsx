@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 
@@ -6,6 +7,9 @@ import { Comment } from "../Comment";
 import S from "./styles.module.css";
 
 export function Post({ author, content, publishedAt }) {
+  const [comments, setComments] = useState(["Muito bom esse post!"]);
+  const [newCommentText, setNewCommentText] = useState("");
+
   const publishedDateFormatted = format(
     publishedAt,
     "d 'de' LLLL 'às' HH:mm'h'",
@@ -19,6 +23,16 @@ export function Post({ author, content, publishedAt }) {
     addSuffix: true,
   });
 
+  const handleCommentSubmit = (event) => {
+    event.preventDefault();
+    setComments([...comments, newCommentText]);
+    setNewCommentText("");
+  };
+
+  const handleNewCommentChange = (event) => {
+    setNewCommentText(event.target.value);
+  };
+
   return (
     <article className={S.post}>
       <header>
@@ -31,25 +45,33 @@ export function Post({ author, content, publishedAt }) {
           </div>
         </div>
 
-        <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+        <time
+          title={publishedDateFormatted}
+          dateTime={publishedAt.toISOString()}
+        >
           {publishedDateRelativeToNow}
         </time>
       </header>
 
       <div className={S.content}>
-        {content.map(line => {
+        {content.map((line) => {
           if (line.type === "paragraph") {
             return <p>{line.content}</p>;
-          } else if (line.type === 'link') {
+          } else if (line.type === "link") {
             return <a href="#">{line.content}</a>;
           }
         })}
       </div>
 
-      <form className={S.commentForm}>
+      <form onSubmit={handleCommentSubmit} className={S.commentForm}>
         <strong>Deixe seu feedback</strong>
 
-        <textarea placeholder="Deixe um comentário" />
+        <textarea
+          name="comment"
+          placeholder="Deixe um comentário"
+          value={newCommentText}
+          onChange={handleNewCommentChange}
+        />
 
         <footer>
           <button type="submit">Publicar</button>
@@ -57,9 +79,9 @@ export function Post({ author, content, publishedAt }) {
       </form>
 
       <div className={S.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment) => {
+          return <Comment content={comment} />;
+        })}
       </div>
     </article>
   );
