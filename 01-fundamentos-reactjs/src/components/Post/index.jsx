@@ -33,6 +33,13 @@ export function Post({ author, content, publishedAt }) {
     setNewCommentText(event.target.value);
   };
 
+  const deleteComment = (commentToDelete) => {
+    const commentsWithoutDeleted = comments.filter(
+      (comment) => comment !== commentToDelete
+    );
+    setComments(commentsWithoutDeleted);
+  };
+
   return (
     <article className={S.post}>
       <header>
@@ -58,7 +65,11 @@ export function Post({ author, content, publishedAt }) {
           if (line.type === "paragraph") {
             return <p key={line.content}>{line.content}</p>;
           } else if (line.type === "link") {
-            return <a key={line.content} href="#">{line.content}</a>;
+            return (
+              <a key={line.content} href="#">
+                {line.content}
+              </a>
+            );
           }
         })}
       </div>
@@ -80,7 +91,13 @@ export function Post({ author, content, publishedAt }) {
 
       <div className={S.commentList}>
         {comments.map((comment) => {
-          return <Comment key={comment} content={comment} />;
+          return (
+            <Comment
+              key={comment}
+              content={comment}
+              onDeleteComment={deleteComment}
+            />
+          );
         })}
       </div>
     </article>
